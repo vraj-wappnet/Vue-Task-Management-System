@@ -32,6 +32,45 @@
     </v-row>
   </v-container>
 </template> -->
+<!-- <script lang="ts">
+import { defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useTaskStore } from "../stores/taskStore";
+import TaskList from "../components/tasks/TaskList.vue";
+import TaskKanban from "../components/tasks/TaskKanban.vue";
+
+export default defineComponent({
+  name: "DashboardView",
+  components: { TaskList, TaskKanban },
+  setup() {
+    const router = useRouter();
+    const taskStore = useTaskStore();
+    const tab = ref("list");
+
+    const navigateToCreate = () => {
+      router.push({ name: "task-create" });
+    };
+
+    const navigateToEdit = (id: string) => {
+      router.push({ name: "task-edit", params: { id } });
+    };
+
+    const deleteTask = (id: string) => {
+      if (confirm("Are you sure you want to delete this task?")) {
+        taskStore.deleteTask(id);
+      }
+    };
+
+    return {
+      tab,
+      taskStore,
+      navigateToCreate,
+      navigateToEdit,
+      deleteTask,
+    };
+  },
+});
+</script> -->
 
 <template>
   <v-container fluid class="pa-1 mt-auto">
@@ -39,7 +78,7 @@
       <v-col cols="12">
         <v-card elevation="0" class="mb-4 pa-4 d-flex align-center">
           <div>
-            <h2 class="text-h4 font-weight-bold">Task Dashboard</h2>
+            <h2 class="text-h4 font-weight-bold text-primary">Task Dashboard</h2>
           </div>
 
           <v-spacer></v-spacer>
@@ -125,9 +164,9 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useTaskStore } from "@/stores/taskStore";
-import TaskList from "@/components/tasks/TaskList.vue";
-import TaskKanban from "@/components/tasks/TaskKanban.vue";
+import { useTaskStore } from "../stores/taskStore";
+import TaskList from "../components/tasks/TaskList.vue";
+import TaskKanban from "../components/tasks/TaskKanban.vue";
 
 export default defineComponent({
   name: "DashboardView",
@@ -136,6 +175,8 @@ export default defineComponent({
     const router = useRouter();
     const taskStore = useTaskStore();
     const tab = ref("list");
+    const confirmDelete = ref(false);
+    const taskToDelete = ref<string | null>(null);
 
     const navigateToCreate = () => {
       router.push({ name: "task-create" });
@@ -146,17 +187,26 @@ export default defineComponent({
     };
 
     const deleteTask = (id: string) => {
-      if (confirm("Are you sure you want to delete this task?")) {
-        taskStore.deleteTask(id);
+      taskToDelete.value = id;
+      confirmDelete.value = true;
+    };
+
+    const confirmDeleteTask = () => {
+      if (taskToDelete.value) {
+        taskStore.deleteTask(taskToDelete.value);
       }
+      confirmDelete.value = false;
+      taskToDelete.value = null;
     };
 
     return {
       tab,
       taskStore,
+      confirmDelete,
       navigateToCreate,
       navigateToEdit,
       deleteTask,
+      confirmDeleteTask,
     };
   },
 });
@@ -166,7 +216,6 @@ export default defineComponent({
 .v-tab {
   text-transform: capitalize !important;
 }
-
 /* Smooth transitions for window items */
 .v-window-item-enter-active,
 .v-window-item-leave-active {

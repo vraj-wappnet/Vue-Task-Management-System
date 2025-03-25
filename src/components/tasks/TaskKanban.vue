@@ -327,6 +327,8 @@ export default defineComponent({
 .task-card {
   transition: transform 0.2s ease-in-out;
   cursor: move;
+  min-height: 200px; /* Adjust this value as needed */
+  width: 100%;
 }
 
 .task-card:hover {

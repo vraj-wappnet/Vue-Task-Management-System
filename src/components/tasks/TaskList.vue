@@ -252,7 +252,7 @@ export default defineComponent({
 
 /* Optional: Set a minimum height for consistency */
 .task-card {
-  min-height: 250px; /* Adjust this value as needed */
+  min-height: 200px; /* Adjust this value as needed */
   width: 100%; /* Ensure full width within column */
 }
 </style>
