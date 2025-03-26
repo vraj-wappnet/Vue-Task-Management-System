@@ -17,7 +17,6 @@ A modern task management application built with Vue 3, TypeScript, Pinia, and Vu
   - Task counters for each status column
 
 - 🛠 **Technical Highlights**
-  - Vue 3 Composition API with TypeScript
   - Pinia for state management with localStorage persistence
   - Vuetify for Material Design UI components
   - Vue Router for navigation
@@ -27,12 +26,13 @@ A modern task management application built with Vue 3, TypeScript, Pinia, and Vu
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/vue-task-manager.git
+   git clone https://github.com/vraj-wappnet/vue-task-manager.git
    cd vue-task-manager
    ```
 
 2.**Install dependencies**
-````bash
+
+`````bash
 npm install
 
 3. **Run development server**
@@ -93,4 +93,4 @@ npm run lint
 
 # Format code with Prettier
 npm run format
-````
+`````
