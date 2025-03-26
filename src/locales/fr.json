@@ -1,0 +1,43 @@
+{
+  "app": {
+    "title": "Système de gestion de tâches",
+    "dashboard": "Tableau de bord",
+    "createTask": "Créer une tâche"
+  },
+  "task": {
+    "title": "Titre",
+    "description": "Description",
+    "dueDate": "Date d'échéance",
+    "priority": "Priorité",
+    "status": "Statut",
+    "noDescription": "Pas de description",
+    "listView": "Vue Liste",
+    "kanbanView": "Vue Kanban",
+    "confirmDeleteTitle": "Confirmer la suppression de la tâche",
+    "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer définitivement cette tâche ? Cette action est irréversible et supprimera la tâche de toutes les vues.",
+    "priorities": {
+      "low": "Faible",
+      "medium": "Moyenne",
+      "high": "Haute"
+    },
+    "statuses": {
+      "pending": "En attente",
+      "inProgress": "En cours",
+      "completed": "Terminé"
+    }
+  },
+  "actions": {
+    "save": "Enregistrer",
+    "reset": "Réinitialiser",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "switchToLight": "Passer en mode clair",
+    "switchToDark": "Passer en mode sombre"
+  },
+  "validation": {
+    "required": "{field} est requis",
+    "maxLength": "{field} doit contenir moins de {max} caractères",
+    "dateFormat": "Format de date invalide (jj-mm-aaaa)"
+  }
+}

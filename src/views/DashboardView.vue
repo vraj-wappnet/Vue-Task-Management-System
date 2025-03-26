@@ -4,7 +4,9 @@
       <v-col cols="12">
         <v-card elevation="0" class="mb-4 pa-4 d-flex align-center">
           <div>
-            <h2 class="text-h4 font-weight-bold text-primary">Task Dashboard</h2>
+            <h2 class="text-h4 font-weight-bold text-primary">
+              {{ $t("app.dashboard") }}
+            </h2>
           </div>
 
           <v-spacer></v-spacer>
@@ -16,7 +18,7 @@
             prepend-icon="mdi-plus"
             @click="navigateToCreate"
           >
-            Create New Task
+            {{ $t("app.createTask") }}
           </v-btn>
         </v-card>
       </v-col>
@@ -28,14 +30,14 @@
           <v-tabs v-model="tab" grow color="primary" bg-color="surface">
             <v-tab value="list" class="font-weight-medium">
               <v-icon start>mdi-view-list</v-icon>
-              List View
+              {{ $t("task.listView") }}
               <v-chip color="primary" variant="flat" size="small" class="ml-2">
                 {{ taskStore.allTasks.length }}
               </v-chip>
             </v-tab>
             <v-tab value="kanban" class="font-weight-medium">
               <v-icon start>mdi-view-column</v-icon>
-              Kanban View
+              {{ $t("task.kanbanView") }}
             </v-tab>
           </v-tabs>
 
@@ -67,20 +69,23 @@
       <v-card>
         <v-card-title class="text-h5">
           <v-icon left color="warning" size="large"> mdi-alert-circle-outline </v-icon>
-          Confirm Task Deletion
+          {{ $t("task.confirmDeleteTitle") }}
         </v-card-title>
 
         <v-card-text class="text-body-1">
-          Are you sure you want to permanently delete this task? This action cannot be undone and
-          will remove the task from all views.
+          {{ $t("task.confirmDeleteMessage") }}
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn variant="text" @click="confirmDelete = false"> Cancel </v-btn>
+          <v-btn variant="text" @click="confirmDelete = false">
+            {{ $t("actions.cancel") }}
+          </v-btn>
 
-          <v-btn color="error" variant="elevated" @click="confirmDeleteTask"> Delete Task </v-btn>
+          <v-btn color="error" variant="elevated" @click="confirmDeleteTask">
+            {{ $t("actions.delete") }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -142,6 +147,7 @@ export default defineComponent({
 .v-tab {
   text-transform: capitalize !important;
 }
+
 /* Smooth transitions for window items */
 .v-window-item-enter-active,
 .v-window-item-leave-active {

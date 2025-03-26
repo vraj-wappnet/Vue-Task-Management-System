@@ -1,0 +1,43 @@
+{
+  "app": {
+    "title": "Task Management System",
+    "dashboard": "Dashboard",
+    "createTask": "Create Task"
+  },
+  "task": {
+    "title": "Title",
+    "description": "Description",
+    "dueDate": "Due Date",
+    "priority": "Priority",
+    "status": "Status",
+    "noDescription": "No description",
+    "listView": "List View",
+    "kanbanView": "Kanban View",
+    "confirmDeleteTitle": "Confirm Task Deletion",
+    "confirmDeleteMessage": "Are you sure you want to permanently delete this task? This action cannot be undone and will remove the task from all views.",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "statuses": {
+      "pending": "Pending",
+      "inProgress": "In Progress",
+      "completed": "Completed"
+    }
+  },
+  "actions": {
+    "save": "Save",
+    "reset": "Reset",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "validation": {
+    "required": "{field} is required",
+    "maxLength": "{field} must be less than {max} characters",
+    "dateFormat": "Invalid date format (dd-mm-yyyy)"
+  }
+}
