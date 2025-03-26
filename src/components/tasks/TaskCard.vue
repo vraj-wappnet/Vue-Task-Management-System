@@ -144,6 +144,7 @@ export default defineComponent({
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
 import { Task } from "@/models/task";
+import { parse } from "date-fns";
 
 export default defineComponent({
   name: "TaskCard",
@@ -194,8 +195,9 @@ export default defineComponent({
       }
     });
 
-    const formatDate = (date: string | Date) => {
-      return new Date(date).toLocaleDateString("en-US", {
+    const formatDate = (date: string) => {
+      const parsedDate = parse(date, "dd-MM-yyyy", new Date());
+      return parsedDate.toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",
         day: "numeric",

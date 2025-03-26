@@ -261,8 +261,8 @@ export default defineComponent({
       () => props.initialTask,
       (newVal) => {
         task.value = { ...newVal };
-      },
-      { deep: true }
+      }
+      // { deep: true }
     );
 
     const priorityOptions = ["Low", "Medium", "High"];
