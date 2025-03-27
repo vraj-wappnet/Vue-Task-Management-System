@@ -11,6 +11,7 @@
     "dueDate": "Due Date",
     "priority": "Priority",
     "status": "Status",
+    "noTasks": "No Tasks Available",
     "noDescription": "No description",
     "listView": "List View",
     "kanbanView": "Kanban View",

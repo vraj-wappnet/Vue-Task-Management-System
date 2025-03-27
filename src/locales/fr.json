@@ -7,6 +7,7 @@
   },
   "task": {
     "title": "Titre",
+    "noTasks": "Aucune tâche disponible",
     "description": "Description",
     "dueDate": "Date d'échéance",
     "priority": "Priorité",
@@ -14,6 +15,7 @@
     "noDescription": "Pas de description",
     "listView": "Vue Liste",
     "kanbanView": "Vue Kanban",
+    "search": "Rechercher des tâches...",
     "confirmDeleteTitle": "Confirmer la suppression de la tâche",
     "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer définitivement cette tâche ? Cette action est irréversible et supprimera la tâche de toutes les vues.",
     "priorities": {

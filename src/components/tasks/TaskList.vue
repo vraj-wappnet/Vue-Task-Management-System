@@ -9,7 +9,6 @@
           rounded="lg"
           class="mb-4"
         >
-          <v-icon left>mdi-information-outline</v-icon>
           {{ $t("task.noTasks") }}
         </v-alert>
 

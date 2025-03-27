@@ -4,42 +4,42 @@
     <v-row class="mb-6">
       <v-col cols="12">
         <v-card flat color="transparent">
-          <v-card-title class="d-flex align-center justify-space-between px-0">
-            <h1 class="text-h4 font-weight-bold text-gray-900 text-primary">
+          <v-card-title class="px-0 pb-0">
+            <h1 class="text-h4 font-weight-bold text-gray-900 text-primary mb-4">
               {{ $t("dashboard.title") }}
             </h1>
-            <div class="d-flex align-center">
-              <!-- Search Input -->
-              <v-text-field
-                v-model="searchQuery"
-                prepend-inner-icon="mdi-magnify"
-                :placeholder="$t('dashboard.searchPlaceholder')"
-                clearable
-                class="mr-4"
-                dense
-                solo
-              ></v-text-field>
-
-              <!-- Status Filter -->
-              <v-btn-toggle
-                v-model="statusFilter"
-                mandatory
-                class="mr-4 elevation-2 font-weight-bold"
-                rounded
-              >
-                <v-btn
-                  v-for="status in ['all', 'Pending', 'In Progress', 'Completed']"
-                  :key="status"
-                  :value="status"
-                  class="px-4"
-                >
-                  {{
-                    $t(`status.${status === "all" ? "all" : status.toLowerCase().replace(" ", "")}`)
-                  }}
-                </v-btn>
-              </v-btn-toggle>
-            </div>
           </v-card-title>
+          <div class="d-flex align-center justify-end flex-wrap">
+            <!-- Search Input -->
+            <v-text-field
+              v-model="searchQuery"
+              prepend-inner-icon="mdi-magnify"
+              :placeholder="$t('dashboard.search')"
+              clearable
+              class="mr-4 mt-5"
+              style="max-width: 300px"
+              solo
+            ></v-text-field>
+
+            <!-- Status Filter -->
+            <v-btn-toggle
+              v-model="statusFilter"
+              mandatory
+              class="elevation-2 font-weight-bold mt-1"
+              rounded
+            >
+              <v-btn
+                v-for="status in ['all', 'Pending', 'In Progress', 'Completed']"
+                :key="status"
+                :value="status"
+                class="px-4"
+              >
+                {{
+                  $t(`status.${status === "all" ? "all" : status.toLowerCase().replace(" ", "")}`)
+                }}
+              </v-btn>
+            </v-btn-toggle>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -133,10 +133,6 @@ export default defineComponent({
       }).length;
     });
 
-    const completionPercentage = computed(() => {
-      return totalTasks.value > 0 ? Math.round((completedTasks.value / totalTasks.value) * 100) : 0;
-    });
-
     const metrics = computed(() => [
       {
         title: t("dashboard.totalTasks"),
@@ -145,7 +141,7 @@ export default defineComponent({
       },
       {
         title: t("dashboard.tasksCompleted"),
-        value: `${completedTasks.value} (${completionPercentage.value}%)`,
+        value: completedTasks.value,
         color: "green darken-2",
       },
       {

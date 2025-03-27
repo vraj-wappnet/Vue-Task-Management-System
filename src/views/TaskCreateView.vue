@@ -3,8 +3,7 @@
     <v-row justify="center">
       <v-col cols="12" md="8" lg="6">
         <v-card elevation="4" class="mx-auto" rounded="lg">
-          <v-card-title class="text-h5 font-weight-bold primary white--text py-2">
-            <v-icon left color="white">mdi-plus-circle</v-icon>
+          <v-card-title class="text-h5 font-weight-bold primary text-primary white--text py-2">
             {{ $t("app.createTask") }}
           </v-card-title>
 
