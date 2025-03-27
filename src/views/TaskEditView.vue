@@ -30,7 +30,7 @@ import { defineComponent, ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useTaskStore } from "@/stores/taskStore";
 import TaskForm from "@/components/tasks/TaskForm.vue";
-import { Task } from "@/models/task";
+import type { Task } from "@/models/task";
 import { useI18n } from "vue-i18n";
 
 export default defineComponent({

@@ -2,6 +2,7 @@
   "app": {
     "title": "Système de gestion de tâches",
     "dashboard": "Tableau de bord",
+    "dashboardMain": "Tableau de bord",
     "createTask": "Créer une tâche"
   },
   "task": {
@@ -39,5 +40,26 @@
     "required": "{field} est requis",
     "maxLength": "{field} doit contenir moins de {max} caractères",
     "dateFormat": "Format de date invalide (jj-mm-aaaa)"
+  },
+  "dashboard": {
+    "title": "Aperçu du tableau de bord",
+    "totalTasks": "Total des tâches",
+    "tasksCompleted": "Tâches terminées",
+    "overdueTasks": "Tâches en retard",
+    "statusDistribution": "Tâches par statut",
+    "priorityDistribution": "Tâches par priorité",
+    "recentTasks": "Tâches récentes",
+    "search": "Rechercher des tâches..."
+  },
+  "status": {
+    "all": "Tous",
+    "pending": "En attente",
+    "inProgress": "En cours",
+    "completed": "Terminée"
+  },
+  "priority": {
+    "low": "Faible",
+    "medium": "Moyenne",
+    "high": "Élevée"
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <v-app :theme="theme">
-    <v-app-bar app color="primary" elevation="2" prominent height="64" class="gradient-bar">
+    <v-app-bar app color="primary" elevation="2" prominent height="50" class="gradient-bar">
       <template v-slot:prepend>
         <v-app-bar-nav-icon variant="text" @click="drawer = !drawer" class="ml-2">
           <v-icon size="large">mdi-menu</v-icon>
@@ -85,7 +85,7 @@
   </v-app>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
@@ -103,6 +103,11 @@ const drawer = ref(false);
 
 const menuItems = [
   { translationKey: "app.dashboard", icon: "mdi-view-dashboard", route: { name: "dashboard" } },
+  {
+    translationKey: "app.dashboardMain",
+    icon: "mdi-chart-line",
+    route: { name: "dashboardMain" },
+  },
   { translationKey: "app.createTask", icon: "mdi-plus", route: { name: "task-create" } },
 ];
 

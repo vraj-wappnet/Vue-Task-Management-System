@@ -9,6 +9,11 @@ const router = createRouter({
       component: () => import("../views/DashboardView.vue"),
     },
     {
+      path: "/",
+      name: "dashboardMain",
+      component: () => import("../views/ProgressReport.vue"),
+    },
+    {
       path: "/tasks/create",
       name: "task-create",
       component: () => import("../views/TaskCreateView.vue"),

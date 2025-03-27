@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { Task, Priority } from "@/models/task";
-import { format } from "date-fns";
+import { format, parse, isBefore } from "date-fns";
 import { v4 as uuidv4 } from "uuid";
 
 interface TaskState {
@@ -121,6 +121,22 @@ export const useTaskStore = defineStore("task", {
     dueTodayTasks: (state) => {
       const today = format(new Date(), "dd-MM-yyyy");
       return state.tasks.filter((task) => task.dueDate === today);
+    },
+    overdueTasks: (state) => {
+      return state.tasks.filter((task) => {
+        const dueDate = parse(task.dueDate, "dd-MM-yyyy", new Date());
+        return isBefore(dueDate, new Date()) && task.status !== "Completed";
+      }).length;
+    },
+
+    recentTasks: (state) => (count: number) => {
+      return [...state.tasks]
+        .sort((a, b) => {
+          const dateA = parse(a.updatedAt, "dd-MM-yyyy", new Date());
+          const dateB = parse(b.updatedAt, "dd-MM-yyyy", new Date());
+          return dateB.getTime() - dateA.getTime();
+        })
+        .slice(0, count);
     },
   },
 });

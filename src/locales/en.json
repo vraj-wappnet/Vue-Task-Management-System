@@ -2,7 +2,8 @@
   "app": {
     "title": "Task Management System",
     "dashboard": "Dashboard",
-    "createTask": "Create Task"
+    "createTask": "Create Task",
+    "dashboardMain": "Progress Report"
   },
   "task": {
     "title": "Title",
@@ -39,5 +40,26 @@
     "required": "{field} is required",
     "maxLength": "{field} must be less than {max} characters",
     "dateFormat": "Invalid date format (dd-mm-yyyy)"
+  },
+  "dashboard": {
+    "title": "Progress Report",
+    "totalTasks": "Total Tasks",
+    "tasksCompleted": "Tasks Completed",
+    "overdueTasks": "Overdue Tasks",
+    "statusDistribution": "Tasks by Status",
+    "priorityDistribution": "Tasks by Priority",
+    "recentTasks": "Recent Tasks",
+    "search": "Search tasks..."
+  },
+  "status": {
+    "all": "All",
+    "pending": "Pending",
+    "inprogress": "In Progress",
+    "completed": "Completed"
+  },
+  "priority": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
   }
 }

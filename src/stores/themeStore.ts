@@ -1,26 +1,3 @@
-// import { defineStore } from "pinia";
-
-// export const useThemeStore = defineStore("theme", {
-//   state: () => ({
-//     isDark: localStorage.getItem("darkMode") === "true" || false,
-//   }),
-//   actions: {
-//     toggleTheme() {
-//       this.isDark = !this.isDark;
-//       localStorage.setItem("darkMode", String(this.isDark));
-//       this.applyTheme();
-//     },
-//     applyTheme() {
-//       const root = document.documentElement;
-//       if (this.isDark) {
-//         root.classList.add("dark");
-//       } else {
-//         root.classList.remove("dark");
-//       }
-//     },
-//   },
-// });
-
 import { defineStore } from "pinia";
 
 export const useThemeStore = defineStore("theme", {
