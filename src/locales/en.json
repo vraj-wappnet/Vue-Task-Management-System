@@ -5,6 +5,12 @@
     "createTask": "Create Task",
     "dashboardMain": "Progress Report"
   },
+  "auth": {
+    "signIn": "Sign In",
+    "signInWithGoogle": "GoogleSignIn",
+    "signOut": "Sign Out",
+    "welcome": "welcome"
+  },
   "task": {
     "title": "Title",
     "description": "Description",

@@ -57,6 +57,15 @@
               {{ isDark ? "mdi-weather-sunny" : "mdi-weather-night" }}
             </v-icon>
           </v-btn>
+
+          <!-- Auth Section -->
+          <template v-if="authStore.isLoading">
+            <v-progress-circular indeterminate size="24" color="white" />
+          </template>
+          <template v-else>
+            <user-profile v-if="authStore.isAuthenticated" />
+            <google-sign-in-button v-else color="white" />
+          </template>
         </div>
       </template>
     </v-app-bar>
@@ -65,7 +74,7 @@
       <div class="d-flex flex-column h-100">
         <v-list nav class="flex-grow-0">
           <v-list-item
-            v-for="item in menuItems"
+            v-for="item in filteredMenuItems"
             :key="item.translationKey"
             :to="item.route"
             active-class="bg-primary-lighten-4"
@@ -80,6 +89,20 @@
             </v-list-item-title>
           </v-list-item>
         </v-list>
+
+        <!-- User Info in Drawer -->
+        <div v-if="authStore.isAuthenticated" class="mt-auto pa-4 text-center">
+          <v-avatar size="72" class="mb-2">
+            <v-img v-if="authStore.photoURL" :src="authStore.photoURL" />
+            <v-icon v-else size="72">mdi-account-circle</v-icon>
+          </v-avatar>
+          <h3 class="text-h6">{{ authStore.displayName }}</h3>
+          <p class="text-caption">{{ authStore.user?.email }}</p>
+          <v-btn color="error" variant="outlined" @click="authStore.signOut()" class="mt-4">
+            <v-icon left>mdi-logout</v-icon>
+            {{ $t("auth.signOut") }}
+          </v-btn>
+        </div>
       </div>
     </v-navigation-drawer>
 
@@ -101,27 +124,49 @@ import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
 import { useThemeStore } from "@/stores/themeStore";
 import { useI18nStore } from "@/stores/i18nStore";
+import { useAuthStore } from "@/stores/authStore";
+import UserProfile from "@/components/auth/UserProfile.vue";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton.vue";
 
-// Vuetify theme
+// Stores
 const theme = useTheme();
 const themeStore = useThemeStore();
 const i18nStore = useI18nStore();
+const authStore = useAuthStore();
 const { locale } = useI18n();
 
+// State
 const isDark = computed(() => themeStore.theme === "dark");
 const drawer = ref(false);
 
+// Menu items with conditional rendering
 const menuItems = [
-  { translationKey: "app.dashboard", icon: "mdi-view-dashboard", route: { name: "dashboard" } },
+  {
+    translationKey: "app.dashboard",
+    icon: "mdi-view-dashboard",
+    route: { name: "dashboard" },
+    requiresAuth: false,
+  },
   {
     translationKey: "app.dashboardMain",
     icon: "mdi-chart-line",
     route: { name: "dashboardMain" },
+    requiresAuth: true,
   },
-  { translationKey: "app.createTask", icon: "mdi-plus", route: { name: "task-create" } },
+  {
+    translationKey: "app.createTask",
+    icon: "mdi-plus",
+    route: { name: "task-create" },
+    requiresAuth: true,
+  },
 ];
 
-// Toggle light/dark mode
+// Filter menu items based on auth status
+const filteredMenuItems = computed(() => {
+  return menuItems.filter((item) => !item.requiresAuth || authStore.isAuthenticated);
+});
+
+// Theme management
 const toggleTheme = () => {
   themeStore.toggleTheme();
   theme.global.name.value = themeStore.theme;
@@ -129,7 +174,6 @@ const toggleTheme = () => {
   updateThemeMeta(themeStore.theme);
 };
 
-// Update meta tag for mobile theme color
 const updateThemeMeta = (theme: string) => {
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) {
@@ -137,7 +181,7 @@ const updateThemeMeta = (theme: string) => {
   }
 };
 
-// Language selection
+// Language management
 const availableLanguages = computed(() => i18nStore.availableLanguages);
 const currentLanguage = computed(() => i18nStore.currentLanguage);
 
@@ -146,14 +190,17 @@ const setLocale = (newLocale: string) => {
   locale.value = newLocale;
 };
 
-// Sync theme and language on app mount
-onMounted(() => {
+// Initialize app
+onMounted(async () => {
   themeStore.initializeTheme();
   theme.global.name.value = themeStore.theme;
   document.documentElement.setAttribute("data-theme", themeStore.theme);
   updateThemeMeta(themeStore.theme);
 
   setLocale(i18nStore.locale);
+
+  // Initialize auth state
+  await authStore.initializeAuth();
 });
 </script>
 
@@ -165,6 +212,7 @@ onMounted(() => {
     rgba(var(--v-theme-primary), 0.9) 0%,
     rgba(var(--v-theme-primary), 0.7) 100%
   ) !important;
+  backdrop-filter: blur(4px);
 }
 
 /* Hover effects for menu items */
@@ -173,12 +221,14 @@ onMounted(() => {
 }
 
 .hover-effect:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(var(--v-theme-primary), 0.1);
 }
 
 /* Responsive language menu */
 .language-menu {
   min-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Adjust text size for smaller screens */
@@ -188,21 +238,41 @@ onMounted(() => {
   }
 }
 
-full-title {
-  white-space: nowrap; /* Prevent wrapping */
-  overflow: visible; /* Allow overflow instead of hiding */
-  text-overflow: clip; /* Disable ellipsis */
-  flex: 1 1 auto; /* Take available space */
-  min-width: 0; /* Prevent flex shrinkage */
+.full-title {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 /* Responsive adjustments for small screens */
 @media (max-width: 600px) {
   .full-title {
-    font-size: 0.75rem !important; /* Smaller size (12px) for long title */
-    padding: 0 4px; /* Tighten padding */
-    text-align: center; /* Center for balance */
-    max-width: 100%; /* Ensure it fits within parent */
+    font-size: 0.75rem !important;
+    padding: 0 4px;
+    text-align: center;
+    max-width: 100%;
   }
+}
+
+/* Smooth transitions for theme changes */
+.v-application {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbar that respects theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(var(--v-theme-background), 0.1);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--v-theme-primary), 0.5);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--v-theme-primary), 0.8);
 }
 </style>

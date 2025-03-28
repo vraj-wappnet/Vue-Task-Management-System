@@ -12,6 +12,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import "@mdi/font/css/materialdesignicons.css";
+import { useAuthStore } from "./stores/authStore";
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
@@ -40,4 +41,8 @@ app.use(router);
 app.use(i18n);
 app.use(vuetify);
 
-app.mount("#app");
+// app.mount("#app");
+const authStore = useAuthStore();
+authStore.initializeAuth().then(() => {
+  app.mount("#app");
+});

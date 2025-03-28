@@ -5,6 +5,12 @@
     "dashboardMain": "Tableau de bord",
     "createTask": "Créer une tâche"
   },
+  "auth": {
+    "signIn": "Se Connecter",
+    "signInWithGoogle": "Se connecter avec Google",
+    "signOut": "Déconnexion",
+    "welcome": "Bienvenue, {name}"
+  },
   "task": {
     "title": "Titre",
     "noTasks": "Aucune tâche disponible",
