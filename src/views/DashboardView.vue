@@ -2,8 +2,8 @@
   <v-container fluid class="pa-1 mt-auto">
     <v-row>
       <v-col cols="12">
-        <v-card elevation="0" class="mb-4 pa-4 d-flex align-center">
-          <div>
+        <v-card elevation="0" class="mb-4 pa-4 d-flex flex-column flex-sm-row align-center">
+          <div class="mb-2 mb-sm-0">
             <h2 class="text-h4 font-weight-bold text-primary">
               {{ $t("app.dashboard") }}
             </h2>
@@ -14,7 +14,7 @@
           <v-btn
             color="primary"
             variant="elevated"
-            size="large"
+            :size="smallScreen ? 'small' : 'large'"
             prepend-icon="mdi-plus"
             @click="navigateToCreate"
           >
@@ -27,7 +27,13 @@
     <v-row>
       <v-col cols="12">
         <v-card elevation="2">
-          <v-tabs v-model="tab" grow color="primary" bg-color="surface">
+          <v-tabs
+            v-model="tab"
+            :grow="display.smAndUp.value"
+            :direction="display.smAndUp ? 'horizontal' : 'vertical'"
+            color="primary"
+            bg-color="surface"
+          >
             <v-tab value="list" class="font-weight-medium">
               <v-icon start>mdi-view-list</v-icon>
               {{ $t("task.listView") }}
@@ -65,10 +71,10 @@
     </v-row>
 
     <!-- Enhanced Confirmation Dialog -->
-    <v-dialog v-model="confirmDelete" max-width="450" persistent>
+    <v-dialog v-model="confirmDelete" :max-width="display.smAndDown ? '90%' : '450'" persistent>
       <v-card>
         <v-card-title class="text-h5">
-          <v-icon left color="warning" size="large"> mdi-alert-circle-outline </v-icon>
+          <v-icon left color="warning" size="large">mdi-alert-circle-outline</v-icon>
           {{ $t("task.confirmDeleteTitle") }}
         </v-card-title>
 
@@ -76,10 +82,10 @@
           {{ $t("task.confirmDeleteMessage") }}
         </v-card-text>
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
+        <v-card-actions class="flex-column flex-sm-row">
+          <v-spacer v-if="display.smAndUp"></v-spacer>
 
-          <v-btn variant="text" @click="confirmDelete = false">
+          <v-btn variant="text" @click="confirmDelete = false" class="mb-2 mb-sm-0">
             {{ $t("actions.cancel") }}
           </v-btn>
 
@@ -93,9 +99,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTaskStore } from "../stores/taskStore";
+import { useDisplay } from "vuetify"; // Moved import to top level
 import TaskList from "../components/tasks/TaskList.vue";
 import TaskKanban from "../components/tasks/TaskKanban.vue";
 
@@ -108,6 +115,14 @@ export default defineComponent({
     const tab = ref("list");
     const confirmDelete = ref(false);
     const taskToDelete = ref<string | null>(null);
+
+    // Use Vuetify's useDisplay composable
+    const display = useDisplay();
+
+    // Detect small screens using Vuetify's display utility
+    const smallScreen = computed(() => {
+      return !display.smAndUp;
+    });
 
     const navigateToCreate = () => {
       router.push({ name: "task-create" });
@@ -134,6 +149,8 @@ export default defineComponent({
       tab,
       taskStore,
       confirmDelete,
+      display, // Expose display directly to template
+      smallScreen,
       navigateToCreate,
       navigateToEdit,
       deleteTask,
@@ -157,5 +174,25 @@ export default defineComponent({
 .v-window-item-enter-from,
 .v-window-item-leave-to {
   opacity: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .text-h4 {
+    font-size: 1.5rem !important; /* Reduce heading size on small screens */
+  }
+
+  .v-card {
+    padding: 8px !important; /* Reduce padding on small screens */
+  }
+
+  .v-btn {
+    width: 100%; /* Full-width buttons on small screens */
+    margin-bottom: 8px; /* Add spacing between stacked buttons */
+  }
+
+  .v-tabs {
+    padding: 0 !important; /* Remove extra padding */
+  }
 }
 </style>

@@ -9,30 +9,43 @@
               {{ $t("dashboard.title") }}
             </h1>
           </v-card-title>
-          <div class="d-flex align-center justify-end flex-wrap">
+
+          <div class="d-flex flex-column flex-sm-row align-center justify-start justify-sm-end">
             <!-- Search Input -->
             <v-text-field
               v-model="searchQuery"
               prepend-inner-icon="mdi-magnify"
               :placeholder="$t('dashboard.search')"
               clearable
-              class="mr-4 mt-5"
-              style="max-width: 300px"
+              class="mr-sm-4 mb-3 mb-sm-0 search-field"
+              style="max-width: 300px; width: 100%"
               solo
+              flat
+              background-color="grey lighten-5"
+              dense
+              rounded="lg"
+              hide-details
+              prepend-inner-icon-color="grey darken-1"
+              clear-icon="mdi-close-circle"
+              clear-icon-color="grey darken-2"
             ></v-text-field>
 
             <!-- Status Filter -->
             <v-btn-toggle
               v-model="statusFilter"
               mandatory
-              class="elevation-2 font-weight-bold mt-1"
+              class="elevation-2 font-weight-bold flex-wrap justify-center status-filter"
               rounded
+              color="primary"
+              group
             >
               <v-btn
                 v-for="status in ['all', 'Pending', 'In Progress', 'Completed']"
                 :key="status"
                 :value="status"
-                class="px-4"
+                class="px-2 px-sm-4 ma-1 status-btn"
+                :class="{ 'active-btn': statusFilter === status }"
+                variant="flat"
               >
                 {{
                   $t(`status.${status === "all" ? "all" : status.toLowerCase().replace(" ", "")}`)
@@ -43,7 +56,6 @@
         </v-card>
       </v-col>
     </v-row>
-
     <!-- Task List -->
     <v-row>
       <v-col cols="12">
@@ -68,13 +80,13 @@
       <v-col v-for="metric in metrics" :key="metric.title" cols="12" md="4">
         <v-card
           :color="metric.color"
-          class="transition-all duration-300 hover:elevation-6 rounded-lg"
+          class="metric-card transition-all duration-300 hover:elevation-6 rounded-lg"
           elevation="4"
         >
-          <v-card-title class="text-subtitle-1 text-white">
+          <v-card-title class="text-subtitle-1 text-white font-weight-medium py-2">
             {{ metric.title }}
           </v-card-title>
-          <v-card-text class="text-h4 text-center text-white font-weight-bold">
+          <v-card-text class="text-h4 text-center text-white font-weight-bold py-4">
             {{ metric.value }}
           </v-card-text>
         </v-card>
@@ -82,17 +94,18 @@
     </v-row>
 
     <!-- Charts Section -->
+
     <v-row class="mb-6">
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="12">
         <v-card
           elevation="4"
           rounded="lg"
-          class="h-full transition-all duration-300 hover:elevation-8"
+          class="chart-card h-full transition-all duration-300 hover:elevation-8"
         >
-          <v-card-title class="text-subtitle-1 font-weight-bold">
+          <v-card-title class="text-subtitle-1 font-weight-bold text-grey-darken-3 py-3">
             {{ $t("dashboard.statusDistribution") }}
           </v-card-title>
-          <v-card-text>
+          <v-card-text class="pa-4">
             <status-pie-chart :data="statusChartData" class="chart-container" />
           </v-card-text>
         </v-card>
@@ -171,7 +184,7 @@ export default defineComponent({
     });
 
     const statusChartData = computed(() => ({
-      labels: [t("status.pending"), t("status.inProgress"), t("status.completed")],
+      labels: [t("status.pending"), t("status.inprogress"), t("status.completed")],
       datasets: [
         {
           data: [
@@ -201,5 +214,114 @@ export default defineComponent({
 .chart-container {
   height: 300px;
   min-height: 250px;
+}
+.metric-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
+  z-index: 0;
+  pointer-events: none; /* Ensures clicks pass through */
+}
+
+.metric-card:hover {
+  transform: translateY(-4px); /* Slight lift on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important; /* Stronger shadow */
+}
+
+.metric-card .v-card-title,
+.metric-card .v-card-text {
+  position: relative; /* Ensures text stays above gradient */
+  z-index: 1;
+}
+
+.metric-card .v-card-title {
+  background-color: rgba(0, 0, 0, 0.1); /* Subtle overlay for title */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Light separator */
+}
+
+.metric-card .v-card-text {
+  letter-spacing: 1px; /* Slight spacing for emphasis */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .metric-card .v-card-title {
+    font-size: 1rem !important; /* Smaller title on mobile */
+  }
+
+  .metric-card .v-card-text {
+    font-size: 1.75rem !important; /* Smaller value on mobile */
+  }
+}
+.chart-card {
+  position: relative;
+  background-color: #ffffff;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at top left, rgba(240, 240, 240, 0.5), transparent 70%);
+  z-index: 0;
+  pointer-events: none; /* Ensures clicks pass through */
+  opacity: 0.8;
+}
+
+.chart-card:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important; /* Enhanced shadow */
+}
+
+.chart-card .v-card-title,
+.chart-card .v-card-text {
+  position: relative; /* Keeps content above gradient */
+  z-index: 1;
+}
+
+.chart-card .v-card-title {
+  background: linear-gradient(to right, #f5f5f5, #ffffff); /* Subtle header gradient */
+  border-bottom: 1px solid #e0e0e0; /* Light separator */
+}
+
+.chart-card .v-card-text {
+  background-color: #fff; /* Ensures chart area is clean */
+}
+
+/* Chart Container */
+.chart-container {
+  height: 300px;
+  min-height: 250px;
+  transition: opacity 0.3s ease;
+}
+
+.chart-card:hover .chart-container {
+  opacity: 0.95; /* Slight fade effect on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .chart-card .v-card-title {
+    font-size: 1rem !important; /* Smaller title on mobile */
+  }
+
+  .chart-container {
+    height: 200px; /* Reduced height on small screens */
+  }
 }
 </style>
