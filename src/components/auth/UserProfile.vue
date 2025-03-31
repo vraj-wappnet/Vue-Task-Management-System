@@ -18,7 +18,7 @@
         <p class="text-caption">{{ user?.email }}</p>
       </v-card-text>
       <v-card-actions class="justify-center">
-        <v-btn color="error" @click="handleSignOut" :loading="isLoading">
+        <v-btn color="error" @click="handleSignOut" :loading="isLoading" :disabled="isLoading">
           <v-icon left>mdi-logout</v-icon>
           {{ $t("auth.signOut") }}
         </v-btn>

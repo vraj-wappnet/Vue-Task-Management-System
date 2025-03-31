@@ -12,7 +12,7 @@
           <v-spacer></v-spacer>
 
           <v-btn
-            color="primary"
+            color="#4484CC"
             variant="elevated"
             :size="smallScreen ? 'small' : 'large'"
             prepend-icon="mdi-plus"

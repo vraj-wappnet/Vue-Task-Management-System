@@ -7,10 +7,11 @@
       :loading="authStore.isLoading"
       @click="handleSignIn"
       class="text-capitalize d-none d-sm-flex"
-      prepend-icon="mdi-google"
       :disabled="authStore.isLoading"
       :ripple="false"
     >
+      <v-icon class="mx-1">mdi-google</v-icon>
+      <span>SignIn</span>
     </v-btn>
 
     <!-- Icon-Only Button for Smaller Screens -->
@@ -27,6 +28,7 @@
     </v-btn>
   </div>
 </template>
+
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from "vue";
 import { useAuthStore } from "@/stores/authStore";
@@ -45,9 +47,8 @@ export default defineComponent({
       }
     };
 
-    // Check screen size for responsive behavior
     const updateScreenSize = () => {
-      isSmallScreen.value = window.innerWidth < 600; // Matches Vuetify's 'sm' breakpoint
+      isSmallScreen.value = window.innerWidth < 600;
     };
 
     onMounted(() => {
@@ -67,9 +68,14 @@ export default defineComponent({
   },
 });
 </script>
+
 <style scoped>
-/* Smooth Transitions */
+/* Center content in button */
 .v-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
   transition: all 0.3s ease-in-out;
 }
 
@@ -78,9 +84,9 @@ export default defineComponent({
   background-color: rgba(var(--v-theme-blue-darken-1), 0.1);
 }
 
-/* Loading Spinner Alignment */
-.v-btn--loading .v-icon {
-  margin-right: 8px;
+/* Loading State */
+.v-btn--loading {
+  opacity: 0.8;
 }
 
 /* Ensure consistent text styling */

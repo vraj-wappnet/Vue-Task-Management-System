@@ -6,7 +6,6 @@
           <v-card-title class="text-h6 font-weight-bold pa-3" :class="statusHeaderClass('Pending')">
             <v-icon left :color="statusIconColor('Pending')">mdi-clock-outline</v-icon>
             {{ $t("task.statuses.pending") }}
-            <v-spacer />
             <v-chip
               :color="statusChipColor('Pending')"
               text-color="white"
@@ -47,7 +46,6 @@
           >
             <v-icon left :color="statusIconColor('In Progress')">mdi-progress-clock</v-icon>
             {{ $t("task.statuses.inProgress") }}
-            <v-spacer />
             <v-chip
               :color="statusChipColor('In Progress')"
               text-color="white"
@@ -88,7 +86,6 @@
           >
             <v-icon left :color="statusIconColor('Completed')">mdi-check-circle-outline</v-icon>
             {{ $t("task.statuses.completed") }}
-            <v-spacer />
             <v-chip
               :color="statusChipColor('Completed')"
               text-color="white"

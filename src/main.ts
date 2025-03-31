@@ -39,6 +39,7 @@ app.use(pinia);
 app.use(router);
 app.use(i18n);
 // Define options for Vue3Toastify
+
 app.use(vuetify);
 
 // app.mount("#app");
