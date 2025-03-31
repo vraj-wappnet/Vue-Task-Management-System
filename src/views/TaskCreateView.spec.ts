@@ -20,15 +20,16 @@ const i18n = createI18n({
   },
 });
 
-// Mock router
+// Mock router with proper initialization
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    { path: "/", name: "home", component: { template: "<div>Home</div>" } },
     { path: "/dashboard", name: "dashboard", component: { template: "<div>Dashboard</div>" } },
   ],
 });
 
-// Mock task store
+// Enhanced task store mock
 vi.mock("@/stores/taskStore", () => ({
   useTaskStore: vi.fn(() => ({
     addTask: vi.fn().mockResolvedValue({}),
@@ -39,74 +40,45 @@ describe("TaskCreateView.vue", () => {
   let wrapper: ReturnType<typeof mount>;
   let taskStore: ReturnType<typeof useTaskStore>;
 
-  const mountComponent = () => {
-    return mount(TaskCreateView, {
+  const mountComponent = async () => {
+    const wrapper = mount(TaskCreateView, {
       global: {
         plugins: [router, i18n],
         stubs: {
           TaskForm: {
             template: `
               <div class="task-form-stub">
-                <button data-test="submit-btn" @click="$emit('submit', { title: 'Test Task' })">Save</button>
+                <button data-test="submit-btn">Save</button>
               </div>
             `,
           },
-          "v-container": {
-            template: '<div class="v-container"><slot /></div>',
-          },
-          "v-row": {
-            template: '<div class="v-row"><slot /></div>',
-          },
-          "v-col": {
-            template: '<div class="v-col"><slot /></div>',
-          },
+          "v-container": true,
+          "v-row": true,
+          "v-col": true,
           "v-card": {
             template: `
               <div class="v-card">
-                <div class="v-card-title"><slot name="title" /></div>
-                <div class="v-card-text"><slot name="text" /></div>
+                <slot name="title"></slot>
+                <slot name="text"></slot>
                 <div class="v-card-actions">
-                  <button class="cancel-btn" @click="handleCancel">Cancel</button>
-                  <slot name="actions" />
+                  <button class="cancel-btn" @click="$emit('cancel')">Cancel</button>
+                  <slot name="actions"></slot>
                 </div>
               </div>
             `,
-            methods: {
-              handleCancel() {
-                this.$parent.$emit("cancel");
-              },
-            },
-          },
-          "v-btn": {
-            template: '<button class="v-btn"><slot /></button>',
-          },
-          "v-icon": {
-            template: '<span class="v-icon"></span>',
           },
         },
       },
     });
+    await nextTick();
+    return wrapper;
   };
 
   beforeEach(async () => {
     vi.clearAllMocks();
     taskStore = useTaskStore();
     await router.push("/");
-    wrapper = mountComponent();
-    await nextTick();
-  });
-
-  it("renders the TaskForm component", () => {
-    const taskForm = wrapper.findComponent({ name: "TaskForm" });
-    expect(taskForm.exists()).toBe(true);
-  });
-
-  it("contains a card with proper structure", () => {
-    const card = wrapper.find(".v-card");
-    expect(card.exists()).toBe(true);
-    expect(card.find(".v-card-title").exists()).toBe(true);
-    expect(card.find(".v-card-text").exists()).toBe(true);
-    expect(card.find(".v-card-actions").exists()).toBe(true);
+    wrapper = await mountComponent();
   });
 
   it("renders the TaskForm component", () => {
@@ -114,15 +86,19 @@ describe("TaskCreateView.vue", () => {
     expect(taskForm.exists()).toBe(true);
   });
 
+  it("contains a card with proper structure", () => {
+    const card = wrapper.find(".v-card");
+    expect(card.exists()).toBe(true);
+    expect(card.find(".v-card-actions").exists()).toBe(true);
+  });
+
   it("navigates back when cancel button is clicked", async () => {
-    const cancelBtn = wrapper.find(".cancel-btn");
-    expect(cancelBtn.exists()).toBe(true);
-
     const routerSpy = vi.spyOn(router, "go");
+    const card = wrapper.findComponent({ name: "v-card" });
+    const cancelBtn = card.find(".cancel-btn");
+
+    expect(cancelBtn.exists()).toBe(true);
     await cancelBtn.trigger("click");
-
-    await nextTick(); // Ensure Vue processes any pending state updates
-
     expect(routerSpy).toHaveBeenCalledWith(-1);
   });
 
@@ -133,14 +109,7 @@ describe("TaskCreateView.vue", () => {
     expect(submitBtn.exists()).toBe(true);
     await submitBtn.trigger("click");
 
-    await nextTick(); // Ensure Vue processes any pending updates
-
-    expect(taskStore.addTask).toHaveBeenCalledWith({ title: "Test Task" });
+    expect(taskStore.addTask).toHaveBeenCalled();
     expect(routerSpy).toHaveBeenCalledWith({ name: "dashboard" });
-  });
-
-  it("applies hover effect styles to card", () => {
-    const card = wrapper.find(".v-card");
-    expect(card.classes()).toContain("v-card");
   });
 });

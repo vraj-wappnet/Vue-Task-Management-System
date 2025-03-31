@@ -53,12 +53,20 @@
           </v-btn>
 
           <!-- Auth Section -->
-          <template v-if="authStore.isLoading">
+          <!-- <template v-if="authStore.isLoading">
             <v-progress-circular indeterminate size="24" color="white" />
           </template>
           <template v-else>
             <user-profile v-if="authStore.isAuthenticated" />
             <google-sign-in-button v-else color="white" />
+          </template> -->
+
+          <template v-if="authStore.isLoading">
+            <v-progress-circular indeterminate size="24" color="white" />
+          </template>
+          <template v-else>
+            <user-profile v-if="authStore.isAuthenticated" :key="authStore.user?.uid" />
+            <google-sign-in-button v-else color="white" @signed-in="handleSignedIn" />
           </template>
         </div>
       </template>
