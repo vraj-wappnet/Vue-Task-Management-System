@@ -1,12 +1,9 @@
 <template>
   <v-app :theme="theme.global.name.value">
-    <v-app-bar app color="primary" elevation="2" height="56" class="gradient-bar px-2 px-sm-4">
-      <template v-slot:prepend>
-        <v-app-bar-nav-icon variant="text" @click="drawer = !drawer" class="ml-n1 ml-sm-2">
-          <v-icon size="large">mdi-menu</v-icon>
-        </v-app-bar-nav-icon>
-      </template>
-
+    <v-app-bar app color="primary" elevation="2" height="50" class="gradient-bar px-2 px-sm-4">
+      <v-app-bar-nav-icon variant="text" @click="drawer = !drawer" class="m-0 pa-0">
+        <v-icon size="large">mdi-menu</v-icon>
+      </v-app-bar-nav-icon>
       <v-app-bar-title
         class="text-body-1 text-sm-subtitle-1 font-weight-bold text-uppercase ml-n3 ml-sm-0 full-title"
       >
@@ -19,18 +16,15 @@
         <!-- Responsive Actions Container -->
         <div class="d-flex align-center">
           <!-- Language Selector -->
-          <v-menu offset-y transition="slide-y-transition" content-class="language-menu">
+          <v-menu offset-y transition="slide-y-transition">
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
                 variant="text"
-                class="text-capitalize d-none d-sm-flex mr-2"
+                class="text-capitalize mr-2"
                 prepend-icon="mdi-translate"
               >
                 {{ currentLanguage }}
-              </v-btn>
-              <v-btn v-bind="props" icon variant="text" class="d-sm-none">
-                <v-icon>mdi-translate</v-icon>
               </v-btn>
             </template>
             <v-list dense class="py-0">
@@ -127,7 +121,6 @@ import { useI18nStore } from "@/stores/i18nStore";
 import { useAuthStore } from "@/stores/authStore";
 import UserProfile from "@/components/auth/UserProfile.vue";
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton.vue";
-
 // Stores
 const theme = useTheme();
 const themeStore = useThemeStore();

@@ -126,7 +126,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { Task } from "@/models/task";
+import type { Task } from "@/models/task";
 import { useTaskStore } from "@/stores/taskStore";
 import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";

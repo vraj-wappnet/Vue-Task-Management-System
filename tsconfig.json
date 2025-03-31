@@ -1,11 +1,14 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
+  "include": ["src/**/*", "tests/**/*"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
     },
-    {
-      "path": "./tsconfig.app.json"
-    }
-  ]
+    "types": ["vitest/globals"], // Optional: for Vitest globals like `describe`, `it`
+    "allowJs": true, // If you have JS files
+    "strict": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  }
 }

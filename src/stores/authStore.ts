@@ -44,6 +44,7 @@ export const useAuthStore = defineStore("auth", {
         this.isLoading = false;
       }
     },
+
     async signOut() {
       this.isLoading = true;
       try {

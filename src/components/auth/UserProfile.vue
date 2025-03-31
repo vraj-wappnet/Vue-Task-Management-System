@@ -39,8 +39,6 @@ export default defineComponent({
     const handleSignOut = async () => {
       try {
         await authStore.signOut();
-        // Optional: Redirect after sign out
-        // router.push('/login');
       } catch (error) {
         console.error("Sign out error:", error);
       }

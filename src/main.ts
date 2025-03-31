@@ -5,7 +5,6 @@ import App from "./App.vue";
 import router from "./router";
 import { languages, defaultLocale } from "@/locales";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-
 // Vuetify setup
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
@@ -39,6 +38,7 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.use(i18n);
+// Define options for Vue3Toastify
 app.use(vuetify);
 
 // app.mount("#app");

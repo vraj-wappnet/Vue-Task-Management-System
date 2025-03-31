@@ -120,8 +120,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch, computed } from "vue";
-import { Task, Priority, Status } from "@/models/task";
+import { defineComponent, ref, watch, computed } from "vue";
+import type { PropType } from "vue";
+import type { Task, Priority, Status } from "@/models/task";
 import { parse, isValid, format } from "date-fns";
 import { useTheme } from "vuetify";
 import { useI18n } from "vue-i18n";
